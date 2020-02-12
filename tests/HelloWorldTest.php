@@ -3,7 +3,7 @@
 namespace Nord\Lumen\Doctrine\Tests;
 
 
-class HelloWorldTest extends \PHPUnit_Framework_TestCase
+class HelloWorldTest extends \PHPUnit\Framework\TestCase
 {
     public function testGreeting() {
         $greeting = "Hello World";
