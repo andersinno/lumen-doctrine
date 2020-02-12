@@ -19,7 +19,7 @@ class SchemaUpdateCommand extends DoctrineSchemaCommand
     /**
      * @inheritdoc
      */
-    public function fire()
+    public function handle()
     {
         $tool     = $this->getSchemaTool();
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();

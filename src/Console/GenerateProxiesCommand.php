@@ -17,7 +17,7 @@ class GenerateProxiesCommand extends DoctrineCommand
     /**
      * @inheritdoc
      */
-    public function fire()
+    public function handle()
     {
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
