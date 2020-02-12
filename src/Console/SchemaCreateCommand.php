@@ -20,7 +20,7 @@ class SchemaCreateCommand extends DoctrineSchemaCommand
      * @inheritdoc
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
-    public function fire()
+    public function handle()
     {
         $tool     = $this->getSchemaTool();
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
