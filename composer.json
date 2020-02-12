@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=7.2",
-        "doctrine/orm": "~2.7.0"
+        "doctrine/orm": "~2.6.0"
     },
     "require-dev": {
         "laravel/lumen-framework": "^6.3",
