@@ -11,7 +11,7 @@
 
 ## Requirements
 
-- PHP 5.5 or newer
+- PHP 7.2 or newer
 - [Composer](http://getcomposer.org)
 
 ## Usage
