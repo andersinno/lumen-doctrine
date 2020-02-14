@@ -302,8 +302,10 @@ class DoctrineServiceProvider extends ServiceProvider
             $databasePlatform = $entityManager->getConnection()->getDatabasePlatform();
 
             foreach ($doctrineConfig['types'] as $name => $className) {
-                Type::addType($name, $className);
-                $databasePlatform->registerDoctrineTypeMapping($name, $name);
+                if (!Type::hasType($name)) {
+                    Type::addType($name, $className);
+                    $databasePlatform->registerDoctrineTypeMapping($name, $name);
+                }
             }
         }
     }
