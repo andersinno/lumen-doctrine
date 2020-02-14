@@ -22,7 +22,7 @@ class FixturesLoadCommand extends DoctrineCommand
     /**
      * @inheritdoc
      */
-    public function fire()
+    public function handle()
     {
         $loader = new Loader();
 

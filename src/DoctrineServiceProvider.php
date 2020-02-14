@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Arr;
 use Nord\Lumen\Doctrine\ORM\Configuration\ConnectionConfiguration;
 use Nord\Lumen\Doctrine\ORM\Configuration\SqlAdapter;
 use Nord\Lumen\Doctrine\ORM\Configuration\SqliteAdapter;
@@ -109,11 +110,11 @@ class DoctrineServiceProvider extends ServiceProvider
 
         $connectionConfig = $this->createConnectionConfig($doctrineConfig, $databaseConfig);
 
-        $type              = array_get($doctrineConfig, 'mapping', self::METADATA_ANNOTATIONS);
-        $paths             = array_get($doctrineConfig, 'paths', [base_path('app/Entities')]);
+        $type              = Arr::get($doctrineConfig, 'mapping', self::METADATA_ANNOTATIONS);
+        $paths             = Arr::get($doctrineConfig, 'paths', [base_path('app/Entities')]);
         $debug             = $config['app.debug'];
-        $proxyDir          = array_get($doctrineConfig, 'proxy.directory');
-        $simpleAnnotations = array_get($doctrineConfig, 'simple_annotations', false);
+        $proxyDir          = Arr::get($doctrineConfig, 'proxy.directory');
+        $simpleAnnotations = Arr::get($doctrineConfig, 'simple_annotations', false);
 
         $metadataConfiguration = $this->createMetadataConfiguration($type, $paths, $debug, $proxyDir, null,
             $simpleAnnotations);
@@ -143,8 +144,8 @@ class DoctrineServiceProvider extends ServiceProvider
      */
     protected function createConnectionConfig(array $doctrineConfig, array $databaseConfig)
     {
-        $connectionName   = array_get($doctrineConfig, 'connection', $databaseConfig['default']);
-        $connectionConfig = array_get($databaseConfig['connections'], $connectionName);
+        $connectionName   = Arr::get($doctrineConfig, 'connection', $databaseConfig['default']);
+        $connectionConfig = Arr::get($databaseConfig['connections'], $connectionName);
 
         if ($connectionConfig === null) {
             throw new Exception("Configuration for connection '$connectionName' not found.");
@@ -258,7 +259,7 @@ class DoctrineServiceProvider extends ServiceProvider
             $configuration->setDefaultRepositoryClassName($doctrineConfig['repository']);
         }
 
-        $namingStrategy = array_get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\ORM\NamingStrategy');
+        $namingStrategy = Arr::get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\ORM\NamingStrategy');
         $configuration->setNamingStrategy(new $namingStrategy);
     }
 
@@ -289,7 +290,7 @@ class DoctrineServiceProvider extends ServiceProvider
     {
         if (isset($doctrineConfig['filters'])) {
             foreach ($doctrineConfig['filters'] as $name => $filter) {
-                if (!array_get($filter, 'enabled', false)) {
+                if (!Arr::get($filter, 'enabled', false)) {
                     continue;
                 }
 
@@ -301,8 +302,10 @@ class DoctrineServiceProvider extends ServiceProvider
             $databasePlatform = $entityManager->getConnection()->getDatabasePlatform();
 
             foreach ($doctrineConfig['types'] as $name => $className) {
-                Type::addType($name, $className);
-                $databasePlatform->registerDoctrineTypeMapping($name, $name);
+                if (!Type::hasType($name)) {
+                    Type::addType($name, $className);
+                    $databasePlatform->registerDoctrineTypeMapping($name, $name);
+                }
             }
         }
     }

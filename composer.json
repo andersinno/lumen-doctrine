@@ -14,14 +14,16 @@
         }
     ],
     "require": {
-        "doctrine/orm": "~2.5"
+        "php": ">=7.2",
+        "doctrine/orm": "~2.7.0"
+    },
+    "require-dev": {
+        "laravel/lumen-framework": "^6.3",
+        "phpunit/phpunit": "^8.5"
     },
     "autoload": {
         "psr-4": {
             "Nord\\Lumen\\Doctrine\\ORM\\": "src"
         }
-    },
-    "require-dev": {
-        "laravel/lumen-framework": "~5.1@dev"
     }
 }
